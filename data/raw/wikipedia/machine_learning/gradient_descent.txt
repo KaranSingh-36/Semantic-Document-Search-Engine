@@ -1,0 +1,2251 @@
+Gradient descent is a method for unconstrained mathematical optimization. It is a first-order iterative algorithm for minimizing a differentiable multivariate function.
+
+The idea is to take repeated steps in the opposite direction of the gradient (or approximate gradient) of the function at the current point, because this is the direction of steepest descent. Conversely, stepping in the direction of the gradient will lead to a trajectory that maximizes that function; the procedure is then known as gradient ascent.
+Gradient descent should not be confused with local search algorithms, although both are iterative methods for optimization.
+Gradient descent is particularly useful in machine learning and artificial intelligence for minimizing the cost or loss function.
+Gradient descent is generally attributed to Augustin-Louis Cauchy, who first suggested it in 1847. Jacques Hadamard independently proposed a similar method in 1907. Its convergence properties for non-linear optimization problems were first studied by Haskell Curry in 1944, with the method becoming increasingly well-studied and used in the following decades.
+A simple extension of gradient descent, stochastic gradient descent, serves as the most basic algorithm used for training most deep networks today.
+
+Description
+
+Gradient descent is based on the observation that if the multi-variable function
+
+ f
+ (
+
+ x
+
+ )
+
+ is defined and differentiable in a neighborhood of a point
+
+ a
+
+, then
+
+ f
+ (
+
+ x
+
+ )
+
+ decreases fastest if one goes from
+
+ a
+
+ in the direction of the negative gradient of
+
+ f
+
+ at
+
+ a
+
+ ,
+ i
+ .
+ e
+ .
+ ,
+ −
+ ∇
+ f
+ (
+
+ a
+
+ )
+
+. It follows that, if
+
+ a
+
+ n
+ +
+ 1
+
+ =
+
+ a
+
+ n
+
+ −
+ η
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+for a small enough step size or learning rate
+
+ η
+ ∈
+
+ R
+
+ +
+
+, then
+
+ f
+ (
+
+ a
+
+ n
+
+ )
+ ≥
+ f
+ (
+
+ a
+
+ n
+ +
+ 1
+
+ )
+
+. In other words, the term
+
+ η
+ ∇
+ f
+ (
+
+ a
+
+ )
+
+ is subtracted from
+
+ a
+
+ because we want to move against the gradient, toward the local minimum. With this observation in mind, one starts with a guess
+
+ x
+
+ 0
+
+ for a local minimum of
+
+ f
+
+, and considers the sequence
+
+ x
+
+ 0
+
+ ,
+
+ x
+
+ 1
+
+ ,
+
+ x
+
+ 2
+
+ ,
+ …
+
+ such that
+
+ x
+
+ n
+ +
+ 1
+
+ =
+
+ x
+
+ n
+
+ −
+
+ η
+
+ n
+
+ ∇
+ f
+ (
+
+ x
+
+ n
+
+ )
+ ,
+
+ n
+ ≥
+ 0.
+
+We have a monotonic sequence
+
+ f
+ (
+
+ x
+
+ 0
+
+ )
+ ≥
+ f
+ (
+
+ x
+
+ 1
+
+ )
+ ≥
+ f
+ (
+
+ x
+
+ 2
+
+ )
+ ≥
+ ⋯
+ ,
+
+so the sequence
+
+ (
+
+ x
+
+ n
+
+ )
+
+ converges to the desired local minimum. Note that the value of the step size
+
+ η
+
+ is allowed to change at every iteration.
+It is possible to guarantee the convergence to a local minimum under certain assumptions on the function
+
+ f
+
+ (for example,
+
+ f
+
+ convex and
+
+ ∇
+ f
+
+ Lipschitz) and particular choices of
+
+ η
+
+. Those include the sequence
+
+ η
+
+ n
+
+ =
+
+ |
+
+ (
+
+ x
+
+ n
+
+ −
+
+ x
+
+ n
+ −
+ 1
+
+ )
+
+ ⊤
+
+ [
+
+ ∇
+ f
+ (
+
+ x
+
+ n
+
+ )
+ −
+ ∇
+ f
+ (
+
+ x
+
+ n
+ −
+ 1
+
+ )
+
+ ]
+
+ |
+
+ ‖
+
+ ∇
+ f
+ (
+
+ x
+
+ n
+
+ )
+ −
+ ∇
+ f
+ (
+
+ x
+
+ n
+ −
+ 1
+
+ )
+
+ ‖
+
+ 2
+
+as in the Barzilai-Borwein method, or a sequence
+
+ η
+
+ n
+
+ satisfying the Wolfe conditions (which can be found by using line search). When the function
+
+ f
+
+ is convex, all local minima are also global minima, so in this case gradient descent can converge to the global solution.
+This process is illustrated in the adjacent picture. Here,
+
+ f
+
+ is assumed to be defined on the plane, and that its graph has a bowl shape. The blue curves are the contour lines, that is, the regions on which the value of
+
+ f
+
+ is constant. A red arrow originating at a point shows the direction of the negative gradient at that point. Note that the (negative) gradient at a point is orthogonal to the contour line going through that point. We see that gradient descent leads us to the bottom of the bowl, that is, to the point where the value of the function
+
+ f
+
+ is minimal.
+
+An analogy for understanding gradient descent
+
+The basic intuition behind gradient descent can be illustrated by a hypothetical scenario. People are stuck in the mountains and are trying to get down (i.e., trying to find the global minimum). There is heavy fog such that visibility is extremely low. Therefore, the path down the mountain is not visible, so they must use local information to find the minimum. They can use the method of gradient descent, which involves looking at the steepness of the hill at their current position, then proceeding in the direction with the steepest descent (i.e., downhill). If they were trying to find the top of the mountain (i.e., the maximum), then they would proceed in the direction of steepest ascent (i.e., uphill). Using this method, they would eventually find their way down the mountain or possibly get stuck in some hole (i.e., local minimum or saddle point), like a mountain lake. However, assume also that the steepness of the hill is not immediately obvious with simple observation, but rather it requires a sophisticated instrument to measure, which the people happen to have at that moment. It takes quite some time to measure the steepness of the hill with the instrument. Thus, they should minimize their use of the instrument if they want to get down the mountain before sunset. The difficulty then is choosing the frequency at which they should measure the steepness of the hill so as not to go off track.
+In this analogy, the people represent the algorithm, and the path taken down the mountain represents the sequence of parameter settings that the algorithm will explore. The steepness of the hill represents the slope of the function at that point. The instrument used to measure steepness is differentiation. The direction they choose to travel in aligns with the gradient of the function at that point. The amount of time they travel before taking another measurement is the step size.
+
+Choosing the step size and descent direction
+
+Since using a step size
+
+ η
+
+ that is too small would slow convergence, and a
+
+ η
+
+ too large would lead to overshoot and divergence, finding a good setting of
+
+ η
+
+ is an important practical problem. Philip Wolfe also advocated using "clever choices of the [descent] direction" in practice. While using a direction that deviates from the steepest descent direction may seem counter-intuitive, the idea is that the smaller slope may be compensated for by being sustained over a much longer distance.
+To reason about this mathematically, consider a direction
+
+ p
+
+ n
+
+ and step size
+
+ η
+
+ n
+
+ and consider the more general update:
+
+ a
+
+ n
+ +
+ 1
+
+ =
+
+ a
+
+ n
+
+ −
+
+ η
+
+ n
+
+ p
+
+ n
+
+.
+Finding good settings of
+
+ p
+
+ n
+
+ and
+
+ η
+
+ n
+
+ requires some thought. First of all, we would like the update direction to point downhill. Mathematically, letting
+
+ θ
+
+ n
+
+ denote the angle between
+
+ −
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+ and
+
+ p
+
+ n
+
+, this requires that
+
+ cos
+ ⁡
+
+ θ
+
+ n
+
+ >
+ 0.
+
+ To say more, we need more information about the objective function that we are optimising. Under the fairly weak assumption that
+
+ f
+
+ is continuously differentiable, we may prove that:
+
+This inequality implies that the amount by which we can be sure the function
+
+ f
+
+ is decreased depends on a trade off between the two terms in square brackets. The first term in square brackets measures the angle between the descent direction and the negative gradient. The second term measures how quickly the gradient changes along the descent direction.
+In principle inequality (1) could be optimized over
+
+ p
+
+ n
+
+ and
+
+ η
+
+ n
+
+ to choose an optimal step size and direction. The problem is that evaluating the second term in square brackets requires evaluating
+
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ −
+ t
+
+ η
+
+ n
+
+ p
+
+ n
+
+ )
+
+, and extra gradient evaluations are generally expensive and undesirable. Some ways around this problem are:
+
+Forgo the benefits of a clever descent direction by setting
+
+ p
+
+ n
+
+ =
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+, and use line search to find a suitable step-size
+
+ γ
+
+ n
+
+, such as one that satisfies the Wolfe conditions. A more economic way of choosing learning rates is backtracking line search, a method that has both good theoretical guarantees and experimental results. Note that one does not need to choose
+
+ p
+
+ n
+
+ to be the gradient; any direction that has positive inner product with the gradient will result in a reduction of the function value (for a sufficiently small value of
+
+ η
+
+ n
+
+).
+Assuming that
+
+ f
+
+ is twice-differentiable, use its Hessian
+
+ ∇
+
+ 2
+
+ f
+
+ to estimate
+
+ ‖
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ −
+ t
+
+ η
+
+ n
+
+ p
+
+ n
+
+ )
+ −
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+ ‖
+
+ 2
+
+ ≈
+ ‖
+ t
+
+ η
+
+ n
+
+ ∇
+
+ 2
+
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+ p
+
+ n
+
+ ‖
+ .
+
+Then choose
+
+ p
+
+ n
+
+ and
+
+ η
+
+ n
+
+ by optimising inequality (1).
+Assuming that
+
+ ∇
+ f
+
+ is Lipschitz, use its Lipschitz constant
+
+ L
+
+ to bound
+
+ ‖
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ −
+ t
+
+ η
+
+ n
+
+ p
+
+ n
+
+ )
+ −
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+ ‖
+
+ 2
+
+ ≤
+ L
+ t
+
+ η
+
+ n
+
+ ‖
+
+ p
+
+ n
+
+ ‖
+ .
+
+ Then choose
+
+ p
+
+ n
+
+ and
+
+ η
+
+ n
+
+ by optimising inequality (1).
+Build a custom model of
+
+ max
+
+ t
+ ∈
+ [
+ 0
+ ,
+ 1
+ ]
+
+ ‖
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ −
+ t
+
+ η
+
+ n
+
+ p
+
+ n
+
+ )
+ −
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+ ‖
+
+ 2
+
+ ‖
+ ∇
+ f
+ (
+
+ a
+
+ n
+
+ )
+
+ ‖
+
+ 2
+
+ for
+
+ f
+
+. Then choose
+
+ p
+
+ n
+
+ and
+
+ η
+
+ n
+
+ by optimising inequality (1).
+Under stronger assumptions on the function
+
+ f
+
+ such as convexity, more advanced techniques may be possible.
+Usually by following one of the recipes above, convergence to a local minimum can be guaranteed. When the function
+
+ f
+
+ is convex, all local minima are also global minima, so in this case gradient descent can converge to the global solution.
+
+Solution of a linear system
+
+Gradient descent can be used to solve a system of linear equations
+
+ A
+
+ x
+
+ −
+
+ b
+
+ =
+ 0
+
+reformulated as a quadratic minimization problem.
+If the system matrix
+
+ A
+
+ is real symmetric and positive-definite, an objective function is defined as the quadratic function, with minimization of
+
+ f
+ (
+
+ x
+
+ )
+ =
+
+ x
+
+ ⊤
+
+ A
+
+ x
+
+ −
+ 2
+
+ x
+
+ ⊤
+
+ b
+
+ ,
+
+so that
+
+ ∇
+ f
+ (
+
+ x
+
+ )
+ =
+ 2
+ (
+
+ A
+
+ x
+
+ −
+
+ b
+
+ )
+ .
+
+For a general real matrix
+
+ A
+
+, linear least squares define
+
+ f
+ (
+
+ x
+
+ )
+ =
+
+ ‖
+
+ A
+
+ x
+
+ −
+
+ b
+
+ ‖
+
+ 2
+
+ .
+
+In traditional linear least squares for real
+
+ A
+
+ and
+
+ b
+
+ the Euclidean norm is used, in which case
+
+ ∇
+ f
+ (
+
+ x
+
+ )
+ =
+ 2
+
+ A
+
+ ⊤
+
+ (
+
+ A
+
+ x
+
+ −
+
+ b
+
+ )
+ .
+
+The line search minimization, finding the locally optimal step size
+
+ η
+
+ on every iteration, can be performed analytically for quadratic functions, and explicit formulas for the locally optimal
+
+ η
+
+ are known.
+For example, for real symmetric and positive-definite matrix
+
+ A
+
+, a simple algorithm can be as follows,
+
+ repeat in the loop:
+
+ r
+
+ :=
+
+ b
+
+ −
+
+ A
+ x
+
+ η
+ :=
+
+ r
+
+ ⊤
+
+ r
+
+ /
+
+ r
+
+ ⊤
+
+ A
+ r
+
+ x
+
+ :=
+
+ x
+
+ +
+ η
+
+ r
+
+ if
+
+ r
+
+ ⊤
+
+ r
+
+ is sufficiently small, then exit loop
+
+ end repeat loop
+
+ return
+
+ x
+
+ as the result
+
+To avoid multiplying by
+
+ A
+
+ twice per iteration,
+we note that
+
+ x
+
+ :=
+
+ x
+
+ +
+ η
+
+ r
+
+ implies
+
+ r
+
+ :=
+
+ r
+
+ −
+ η
+
+ A
+ r
+
+, which gives the traditional algorithm,
+
+ r
+
+ :=
+
+ b
+
+ −
+
+ A
+ x
+
+ repeat in the loop:
+
+ η
+ :=
+
+ r
+
+ ⊤
+
+ r
+
+ /
+
+ r
+
+ ⊤
+
+ A
+ r
+
+ x
+
+ :=
+
+ x
+
+ +
+ η
+
+ r
+
+ if
+
+ r
+
+ ⊤
+
+ r
+
+ is sufficiently small, then exit loop
+
+ r
+
+ :=
+
+ r
+
+ −
+ η
+
+ A
+ r
+
+ end repeat loop
+
+ return
+
+ x
+
+ as the result
+
+The method is rarely used for solving linear equations, with the conjugate gradient method being one of the most popular alternatives. The number of gradient descent iterations is commonly proportional to the spectral condition number
+
+ κ
+ (
+
+ A
+
+ )
+
+ of the system matrix
+
+ A
+
+ (the ratio of the maximum to minimum eigenvalues of
+
+ A
+
+ ⊤
+
+ A
+
+), while the convergence of conjugate gradient method is typically determined by a square root of the condition number, i.e., is much faster. Both methods can benefit from preconditioning, where gradient descent may require less assumptions on the preconditioner.
+
+Geometric behavior and residual orthogonality
+
+In steepest descent applied to solving
+
+ A
+ x
+
+ =
+
+ b
+
+, where
+
+ A
+
+ is symmetric positive-definite, the residual vectors
+
+ r
+
+ k
+
+ =
+
+ b
+
+ −
+
+ A
+
+ x
+
+ k
+
+ are orthogonal across iterations:
+
+ ⟨
+
+ r
+
+ k
+ +
+ 1
+
+ ,
+
+ r
+
+ k
+
+ ⟩
+ =
+ 0.
+
+Because each step is taken in the steepest direction, steepest-descent steps alternate between directions aligned with the extreme axes of the elongated level sets. When
+
+ κ
+ (
+
+ A
+
+ )
+
+ is large, this produces a characteristic zig–zag path. The poor conditioning of
+
+ A
+
+ is the primary cause of the slow convergence, and orthogonality of successive residuals reinforces this alternation.
+As shown in the image on the right, steepest descent converges slowly due to the high condition number of
+
+ A
+
+, and the orthogonality of residuals forces each new direction to undo the overshoot from the previous step. The result is a path that zigzags toward the solution. This inefficiency is one reason conjugate gradient or preconditioning methods are preferred.
+
+Solution of a non-linear system
+
+Gradient descent can also be used to solve a system of nonlinear equations. Below is an example that shows how to use the gradient descent to solve for three unknown variables, x1, x2, and x3. This example shows one iteration of the gradient descent.
+Consider the nonlinear system of equations
+
+ {
+
+ 3
+
+ x
+
+ 1
+
+ −
+ cos
+ ⁡
+ (
+
+ x
+
+ 2
+
+ x
+
+ 3
+
+ )
+ −
+
+ 3
+ 2
+
+ =
+ 0
+
+ 4
+
+ x
+
+ 1
+
+ 2
+
+ −
+ 625
+
+ x
+
+ 2
+
+ 2
+
+ +
+ 2
+
+ x
+
+ 2
+
+ −
+ 1
+ =
+ 0
+
+ exp
+ ⁡
+ (
+ −
+
+ x
+
+ 1
+
+ x
+
+ 2
+
+ )
+ +
+ 20
+
+ x
+
+ 3
+
+ +
+
+ 10
+ π
+ −
+ 3
+
+ 3
+
+ =
+ 0
+
+Let us introduce the associated function
+
+ G
+ (
+
+ x
+
+ )
+ =
+
+ [
+
+ 3
+
+ x
+
+ 1
+
+ −
+ cos
+ ⁡
+ (
+
+ x
+
+ 2
+
+ x
+
+ 3
+
+ )
+ −
+
+ 3
+ 2
+
+ 4
+
+ x
+
+ 1
+
+ 2
+
+ −
+ 625
+
+ x
+
+ 2
+
+ 2
+
+ +
+ 2
+
+ x
+
+ 2
+
+ −
+ 1
+
+ exp
+ ⁡
+ (
+ −
+
+ x
+
+ 1
+
+ x
+
+ 2
+
+ )
+ +
+ 20
+
+ x
+
+ 3
+
+ +
+
+ 10
+ π
+ −
+ 3
+
+ 3
+
+ ]
+
+ ,
+
+where
+
+ x
+
+ =
+
+ [
+
+ x
+
+ 1
+
+ x
+
+ 2
+
+ x
+
+ 3
+
+ ]
+
+ .
+
+One might now define the objective function
+
+ f
+ (
+
+ x
+
+ )
+
+ =
+
+ 1
+ 2
+
+ G
+
+ ⊤
+
+ (
+
+ x
+
+ )
+ G
+ (
+
+ x
+
+ )
+
+ =
+
+ 1
+ 2
+
+ [
+
+ (
+
+ 3
+
+ x
+
+ 1
+
+ −
+ cos
+ ⁡
+ (
+
+ x
+
+ 2
+
+ x
+
+ 3
+
+ )
+ −
+
+ 3
+ 2
+
+ )
+
+ 2
+
+ +
+
+ (
+
+ 4
+
+ x
+
+ 1
+
+ 2
+
+ −
+ 625
+
+ x
+
+ 2
+
+ 2
+
+ +
+ 2
+
+ x
+
+ 2
+
+ −
+ 1
+
+ )
+
+ 2
+
+ +
+
+ (
+
+ exp
+ ⁡
+ (
+ −
+
+ x
+
+ 1
+
+ x
+
+ 2
+
+ )
+ +
+ 20
+
+ x
+
+ 3
+
+ +
+
+ 10
+ π
+ −
+ 3
+
+ 3
+
+ )
+
+ 2
+
+ ]
+
+ ,
+
+which we will attempt to minimize. As an initial guess, let us use
+
+ x
+
+ (
+ 0
+ )
+
+ =
+
+ 0
+
+ =
+
+ [
+
+ 0
+
+ 0
+
+ 0
+
+ ]
+
+ .
+
+We know that
+
+ x
+
+ (
+ 1
+ )
+
+ =
+
+ 0
+
+ −
+
+ η
+
+ 0
+
+ ∇
+ f
+ (
+
+ 0
+
+ )
+ =
+
+ 0
+
+ −
+
+ η
+
+ 0
+
+ J
+
+ G
+
+ (
+
+ 0
+
+ )
+
+ ⊤
+
+ G
+ (
+
+ 0
+
+ )
+ ,
+
+where the Jacobian matrix
+
+ J
+
+ G
+
+ is given by
+
+ J
+
+ G
+
+ (
+
+ x
+
+ )
+ =
+
+ [
+
+ 3
+
+ sin
+ ⁡
+ (
+
+ x
+
+ 2
+
+ x
+
+ 3
+
+ )
+
+ x
+
+ 3
+
+ sin
+ ⁡
+ (
+
+ x
+
+ 2
+
+ x
+
+ 3
+
+ )
+
+ x
+
+ 2
+
+ 8
+
+ x
+
+ 1
+
+ −
+ 1250
+
+ x
+
+ 2
+
+ +
+ 2
+
+ 0
+
+ −
+
+ x
+
+ 2
+
+ exp
+ ⁡
+
+ (
+ −
+
+ x
+
+ 1
+
+ x
+
+ 2
+
+ )
+
+ −
+
+ x
+
+ 1
+
+ exp
+ ⁡
+ (
+ −
+
+ x
+
+ 1
+
+ x
+
+ 2
+
+ )
+
+ 20
+
+ ]
+
+ .
+
+We calculate:
+
+ J
+
+ G
+
+ (
+
+ 0
+
+ )
+ =
+
+ [
+
+ 3
+
+ 0
+
+ 0
+
+ 0
+
+ 2
+
+ 0
+
+ 0
+
+ 0
+
+ 20
+
+ ]
+
+ ,
+
+ G
+ (
+
+ 0
+
+ )
+ =
+
+ [
+
+ −
+ 2.5
+
+ −
+ 1
+
+ 10.472
+
+ ]
+
+ .
+
+Thus
+
+ x
+
+ (
+ 1
+ )
+
+ =
+
+ 0
+
+ −
+
+ η
+
+ 0
+
+ [
+
+ −
+ 7.5
+
+ −
+ 2
+
+ 209.44
+
+ ]
+
+ ,
+
+and
+
+ f
+ (
+
+ 0
+
+ )
+ =
+ 0.5
+
+ (
+
+ (
+ −
+ 2.5
+
+ )
+
+ 2
+
+ +
+ (
+ −
+ 1
+
+ )
+
+ 2
+
+ +
+ (
+ 10.472
+
+ )
+
+ 2
+
+ )
+
+ =
+ 58.456.
+
+Now, a suitable
+
+ η
+
+ 0
+
+ must be found such that
+
+ f
+
+ (
+
+ x
+
+ (
+ 1
+ )
+
+ )
+
+ ≤
+ f
+
+ (
+
+ x
+
+ (
+ 0
+ )
+
+ )
+
+ =
+ f
+ (
+
+ 0
+
+ )
+ .
+
+This can be done with any of a variety of line search algorithms. One might also simply guess
+
+ η
+
+ 0
+
+ =
+ 0.001
+ ,
+
+ which gives
+
+ x
+
+ (
+ 1
+ )
+
+ =
+
+ [
+
+ 0.0075
+
+ 0.002
+
+ −
+ 0.20944
+
+ ]
+
+ .
+
+Evaluating the objective function at this value, yields
+
+ f
+
+ (
+
+ x
+
+ (
+ 1
+ )
+
+ )
+
+ =
+ 0.5
+
+ (
+
+ (
+ −
+ 2.48
+
+ )
+
+ 2
+
+ +
+ (
+ −
+ 1.00
+
+ )
+
+ 2
+
+ +
+ (
+ 6.28
+
+ )
+
+ 2
+
+ )
+
+ =
+ 23.306.
+
+The decrease from
+
+ f
+ (
+
+ 0
+
+ )
+ =
+ 58.456
+
+ to the next step's value of
+
+ f
+
+ (
+
+ x
+
+ (
+ 1
+ )
+
+ )
+
+ =
+ 23.306
+
+is a sizable decrease in the objective function. Further steps would reduce its value further until an approximate solution to the system was found.
+
+Comments
+
+Gradient descent works in spaces of any number of dimensions, even in infinite-dimensional ones. In the latter case, the search space is typically a function space, and one calculates the Fréchet derivative of the functional to be minimized to determine the descent direction.
+That gradient descent works in any number of dimensions (finite number at least) can be seen as a consequence of the Cauchy–Schwarz inequality, i.e. the magnitude of the inner (dot) product of two vectors of any dimension is maximized when they are colinear. In the case of gradient descent, that would be when the vector of independent variable adjustments is proportional to the gradient vector of partial derivatives.
+The gradient descent can take many iterations to compute a local minimum with a required accuracy, if the curvature in different directions is very different for the given function. For such functions, preconditioning, which changes the geometry of the space to shape the function level sets like concentric circles, cures the slow convergence. Constructing and applying preconditioning can be computationally expensive, however.
+The gradient descent can be modified via momentums (Nesterov, Polyak, and Frank–Wolfe) and heavy-ball parameters (exponential moving averages and positive-negative momentum). The main examples of such optimizers are Adam, DiffGrad, Yogi, AdaBelief, etc.
+Methods based on Newton's method and inversion of the Hessian using conjugate gradient techniques can be better alternatives. Generally, such methods converge in fewer iterations, but the cost of each iteration is higher. An example is the BFGS method which consists in calculating on every step a matrix by which the gradient vector is multiplied to go into a "better" direction, combined with a more sophisticated line search algorithm, to find the "best" value of
+
+ η
+ .
+
+ For extremely large problems, where the computer-memory issues dominate, a limited-memory method such as L-BFGS should be used instead of BFGS or the steepest descent.
+While it is sometimes possible to substitute gradient descent for a local search algorithm, gradient descent is not in the same family: although it is an iterative method for local optimization, it relies on an objective function's gradient rather than an explicit exploration of a solution space.
+Gradient descent can be viewed as applying Euler's method for solving ordinary differential equations
+
+ x
+ ′
+
+ (
+ t
+ )
+ =
+ −
+ ∇
+ f
+ (
+ x
+ (
+ t
+ )
+ )
+
+ to a gradient flow. In turn, this equation may be derived as an optimal controller for the control system
+
+ x
+ ′
+
+ (
+ t
+ )
+ =
+ u
+ (
+ t
+ )
+
+ with
+
+ u
+ (
+ t
+ )
+
+ given in feedback form
+
+ u
+ (
+ t
+ )
+ =
+ −
+ ∇
+ f
+ (
+ x
+ (
+ t
+ )
+ )
+
+.
+
+Modifications
+
+Gradient descent can converge to a local minimum and slow down in a neighborhood of a saddle point. Even for unconstrained quadratic minimization, gradient descent develops a zig–zag pattern of subsequent iterates as iterations progress, resulting in slow convergence. Multiple modifications of gradient descent have been proposed to address these deficiencies.
+
+Fast gradient methods
+
+Yurii Nesterov has proposed a simple modification that enables faster convergence for convex problems and has been since further generalized. For unconstrained smooth problems, the method is called the fast gradient method (FGM) or the accelerated gradient method (AGM). Specifically, if the differentiable function
+
+ f
+
+ is convex and
+
+ ∇
+ f
+
+ is Lipschitz, and it is not assumed that
+
+ f
+
+ is strongly convex, then the error in the objective value generated at each step
+
+ k
+
+ by the gradient descent method will be bounded by
+
+ O
+
+ (
+
+ k
+
+ −
+ 1
+
+ )
+
+. Using the Nesterov acceleration technique, the error decreases at
+
+ O
+
+ (
+
+ k
+
+ −
+ 2
+
+ )
+
+. It is known that the rate
+
+ O
+
+ (
+
+ k
+
+ −
+ 2
+
+ )
+
+ for the decrease of the cost function is optimal for first-order optimization methods. Nevertheless, there is the opportunity to improve the algorithm by reducing the constant factor. The optimized gradient method (OGM) reduces that constant by a factor of two and is an optimal first-order method for large-scale problems.
+For constrained or non-smooth problems, Nesterov's FGM is called the fast proximal gradient method (FPGM), an acceleration of the proximal gradient method.
+
+Momentum or heavy ball method
+
+Trying to break the zig-zag pattern of gradient descent, the momentum or heavy ball method uses a momentum term in analogy to a heavy ball sliding on the surface of values of the function being minimized, or to mass movement in Newtonian dynamics through a viscous medium in a conservative force field. Gradient descent with momentum remembers the solution update at each iteration, and determines the next update as a linear combination of the gradient and the previous update. For unconstrained quadratic minimization, a theoretical convergence rate bound of the heavy ball method is asymptotically the same as that for the optimal conjugate gradient method.
+This technique is used in stochastic gradient descent and as an extension to the backpropagation algorithms used to train artificial neural networks. In the direction of updating, stochastic gradient descent adds a stochastic property. The weights can be used to calculate the derivatives.
+
+Extensions
+
+Gradient descent can be extended to handle constraints by including a projection onto the set of constraints. This method is only feasible when the projection is efficiently computable on a computer. Under suitable assumptions, this method converges. This method is a specific case of the forward–backward algorithm for monotone inclusions (which includes convex programming and variational inequalities).
+Gradient descent is a special case of mirror descent using the squared Euclidean distance as the given Bregman divergence.
+
+Theoretical properties
+
+The properties of gradient descent depend on the properties of the objective function and the variant of gradient descent used (for example, if a line search step is used). The assumptions made affect the convergence rate, and other properties, that can be proven for gradient descent. For example, if the objective is assumed to be strongly convex and lipschitz smooth, then gradient descent converges linearly with a fixed step size. Looser assumptions lead to either weaker convergence guarantees or require a more sophisticated step size selection.
+
+Examples
+
+Yang–Mills flow
+Yang–Mills–Higgs flow
+Seiberg–Witten flow

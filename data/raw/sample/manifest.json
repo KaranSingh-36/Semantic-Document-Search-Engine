@@ -1,0 +1,146 @@
+[
+  {
+    "doc_id": "sample_what_is_artificial_intelligence",
+    "title": "What is Artificial Intelligence",
+    "category": "Artificial Intelligence",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "what_is_artificial_intelligence.txt",
+    "relative_path": "artificial_intelligence/what_is_artificial_intelligence.txt"
+  },
+  {
+    "doc_id": "sample_natural_language_processing_overview",
+    "title": "Natural Language Processing Overview",
+    "category": "Artificial Intelligence",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "natural_language_processing_overview.txt",
+    "relative_path": "artificial_intelligence/natural_language_processing_overview.txt"
+  },
+  {
+    "doc_id": "sample_introduction_to_machine_learning",
+    "title": "Introduction to Machine Learning",
+    "category": "Machine Learning",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "introduction_to_machine_learning.txt",
+    "relative_path": "machine_learning/introduction_to_machine_learning.txt"
+  },
+  {
+    "doc_id": "sample_neural_networks_and_deep_learning",
+    "title": "Neural Networks and Deep Learning",
+    "category": "Machine Learning",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "neural_networks_and_deep_learning.txt",
+    "relative_path": "machine_learning/neural_networks_and_deep_learning.txt"
+  },
+  {
+    "doc_id": "sample_protecting_computers_from_malware",
+    "title": "Protecting Computers from Malware",
+    "category": "Cybersecurity",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "protecting_computers_from_malware.txt",
+    "relative_path": "cybersecurity/protecting_computers_from_malware.txt"
+  },
+  {
+    "doc_id": "sample_network_security_basics",
+    "title": "Network Security Basics",
+    "category": "Cybersecurity",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "network_security_basics.txt",
+    "relative_path": "cybersecurity/network_security_basics.txt"
+  },
+  {
+    "doc_id": "sample_managing_diabetes",
+    "title": "Managing Diabetes",
+    "category": "Healthcare",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "managing_diabetes.txt",
+    "relative_path": "healthcare/managing_diabetes.txt"
+  },
+  {
+    "doc_id": "sample_telemedicine_and_remote_care",
+    "title": "Telemedicine and Remote Care",
+    "category": "Healthcare",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "telemedicine_and_remote_care.txt",
+    "relative_path": "healthcare/telemedicine_and_remote_care.txt"
+  },
+  {
+    "doc_id": "sample_online_learning",
+    "title": "Online Learning",
+    "category": "Education",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "online_learning.txt",
+    "relative_path": "education/online_learning.txt"
+  },
+  {
+    "doc_id": "sample_the_importance_of_early_childhood_education",
+    "title": "The Importance of Early Childhood Education",
+    "category": "Education",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "the_importance_of_early_childhood_education.txt",
+    "relative_path": "education/the_importance_of_early_childhood_education.txt"
+  },
+  {
+    "doc_id": "sample_cloud_computing_explained",
+    "title": "Cloud Computing Explained",
+    "category": "Technology",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "cloud_computing_explained.txt",
+    "relative_path": "technology/cloud_computing_explained.txt"
+  },
+  {
+    "doc_id": "sample_smartphones_and_mobile_technology",
+    "title": "Smartphones and Mobile Technology",
+    "category": "Technology",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "smartphones_and_mobile_technology.txt",
+    "relative_path": "technology/smartphones_and_mobile_technology.txt"
+  },
+  {
+    "doc_id": "sample_understanding_climate_change",
+    "title": "Understanding Climate Change",
+    "category": "Environment",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "understanding_climate_change.txt",
+    "relative_path": "environment/understanding_climate_change.txt"
+  },
+  {
+    "doc_id": "sample_reducing_plastic_waste",
+    "title": "Reducing Plastic Waste",
+    "category": "Environment",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "reducing_plastic_waste.txt",
+    "relative_path": "environment/reducing_plastic_waste.txt"
+  },
+  {
+    "doc_id": "sample_how_photosynthesis_works",
+    "title": "How Photosynthesis Works",
+    "category": "Science",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "how_photosynthesis_works.txt",
+    "relative_path": "science/how_photosynthesis_works.txt"
+  },
+  {
+    "doc_id": "sample_black_holes",
+    "title": "Black Holes",
+    "category": "Science",
+    "source": "Sample document written for this project (NOT an external source)",
+    "source_url": "",
+    "file_name": "black_holes.txt",
+    "relative_path": "science/black_holes.txt"
+  }
+]

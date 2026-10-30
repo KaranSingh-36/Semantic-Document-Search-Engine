@@ -1,0 +1,34 @@
+# Virtual environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# Downloaded models and NLP resources (re-downloaded automatically)
+models/pretrained/
+nltk_data/
+
+# Generated index artefacts (rebuild with: python -m src.indexing --build)
+data/processed/*
+!data/processed/.gitkeep
+models/tfidf/*
+!models/tfidf/.gitkeep
+models/embeddings/*
+!models/embeddings/.gitkeep
+
+# User uploads
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Raw API responses (cleaned text + manifest are kept)
+data/raw/wikipedia/raw_extracts/
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+*.tmp
+*.tmp.npy

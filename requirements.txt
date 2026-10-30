@@ -1,0 +1,36 @@
+# Semantic Document Search Engine - Python 3.10 / 3.11
+# Install inside the project virtual environment:
+#   python -m pip install -r requirements.txt
+#
+# The extra index provides CPU-only PyTorch wheels, so Linux does not download
+# the multi-GB CUDA build. (On Windows, PyPI wheels are CPU-only anyway.)
+# requirements-lock.txt pins the exact versions that were tested (Python 3.11).
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Frontend
+streamlit>=1.50,<2
+
+# Data processing
+pandas>=2.1,<4
+numpy>=1.26,<3
+scipy>=1.11,<2
+
+# Classical NLP / ML
+scikit-learn>=1.4,<2
+nltk>=3.8.1,<4
+joblib>=1.3,<2
+
+# Transformer embeddings (CPU)
+torch>=2.2,<3
+sentence-transformers>=3.0,<7
+
+# Document extraction
+pypdf>=4.0,<7
+python-docx>=1.1,<2
+
+# Visualisation
+matplotlib>=3.8,<4
+plotly>=5.20,<8
+
+# Testing
+pytest>=8.0,<10
